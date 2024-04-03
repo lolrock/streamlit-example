@@ -1,13 +1,38 @@
+import altair as alt
+import numpy as np
+import pandas as pd
 import streamlit as st
-from streamlit.components.v1 import html
 
-# 토스 결제 위젯 스크립트 삽입을 위한 HTML 코드
-toss_payment_widget_html = """
-<head>
-<meta charset="utf-8" />
-<script src="https://js.tosspayments.com/v1/payment-widget"></script>
-</head>
+"""
+# Welcome to Streamlit!
+Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:.
+If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
+forums](https://discuss.streamlit.io).
+In the meantime, below is an example of what you can do with just a few lines of code:
 """
 
-# Streamlit 앱에 HTML 삽입
-html(toss_payment_widget_html, height=0)  # 높이는 실제로 표시할 내용이 없기 때문에 0으로 설정
+num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
+num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
+
+indices = np.linspace(0, 1, num_points)
+theta = 2 * np.pi * num_turns * indices
+radius = indices
+
+x = radius * np.cos(theta)
+y = radius * np.sin(theta)
+
+df = pd.DataFrame({
+    "x": x,
+    "y": y,
+    "idx": indices,
+    "rand": np.random.randn(num_points),
+})
+
+st.altair_chart(alt.Chart(df, height=700, width=700)
+    .mark_point(filled=True)
+    .encode(
+        x=alt.X("x", axis=None),
+        y=alt.Y("y", axis=None),
+        color=alt.Color("idx", legend=None, scale=alt.Scale()),
+        size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
+    ))
