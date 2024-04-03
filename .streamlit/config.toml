@@ -1,0 +1,12 @@
+[browser]
+gatherUsageStats = false
+
+[deprecation]
+showPyplotGlobalUse = false
+
+[theme]
+base="light"
+
+# 헤더 숨기기
+[menu]
+hideGitRepoLink = true
